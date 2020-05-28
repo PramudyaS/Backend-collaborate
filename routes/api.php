@@ -19,3 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login','LoginController@login');
+
+Route::group(['middleware'=>'auth:sanctum'],function(){
+	Route::get('project/{creator_id}','ProjectController@index');
+	Route::resource('project','ProjectController');
+});

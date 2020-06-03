@@ -22,4 +22,10 @@ class LoginController extends Controller
 
     	return response()->json(['user'=>Auth::user(),'token'=>$token],201);
     }
+
+
+    public function logout()
+    {
+        
+    }
 }

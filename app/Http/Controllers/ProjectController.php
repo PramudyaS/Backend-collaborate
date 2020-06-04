@@ -54,7 +54,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return 'a';
+        return response()->json(['message'=>'success','project'=>$project]);
     }
 
     /**
@@ -65,7 +65,11 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        $project = Project::with('creator')
+        ->where('id',$project->id)
+        ->first();
+        
+        return response()->json(['message'=>'success','project'=>$project]);
     }
 
     /**

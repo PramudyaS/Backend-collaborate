@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Task;
 use Illuminate\Http\Request;
+use DB;
 
 class TaskController extends Controller
 {
@@ -14,7 +15,8 @@ class TaskController extends Controller
      */
     public function index($project_id)
     {
-        $tasks = Task::where('project_id')
+        $tasks = Task::where('project_id',$project_id)
+        ->select('tasks.id','tasks.name','tasks.description','tasks.project_id',DB::raw('DATE_FORMAT(due_date,"%d %b %Y") as due_date'),'tasks.status')
         ->latest()
         ->get();
 
@@ -52,7 +54,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return response()->json(['message'=>'success','task'=>$task]);
     }
 
     /**

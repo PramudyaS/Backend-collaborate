@@ -14,7 +14,7 @@ class TodoController extends Controller
      */
     public function index($task_id)
     {
-        $todos = Todo::where('task_id')
+        $todos = Todo::where('task_id',$task_id)
         ->latest()
         ->get();
 
@@ -61,9 +61,9 @@ class TodoController extends Controller
      * @param  \App\todo  $todo
      * @return \Illuminate\Http\Response
      */
-    public function edit(todo $todo)
+    public function edit(Todo $todo)
     {
-        //
+        return response()->json(['message'=>'success','todo'=>$todo]);
     }
 
     /**

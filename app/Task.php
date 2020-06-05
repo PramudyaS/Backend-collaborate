@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     protected $guarded = ['id'];
+
+    public function project()
+    {
+    	return $this->belongsTo('App\Project','project_id','id');
+    }
 }

@@ -65,7 +65,11 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        $task = Task::with('project')
+        ->where('id',$task->id)
+        ->first();
+        
+        return response()->json(['message'=>'success','task'=>$task]);
     }
 
     /**

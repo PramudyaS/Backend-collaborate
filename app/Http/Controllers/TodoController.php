@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Todo;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class TodoController extends Controller
 {
@@ -39,7 +40,13 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        $todo = Todo::create($request->all());
+        $todo = Todo::create([
+        'task_id'       => $request->task_id,
+        'user_id'       => $request->user_id,
+        'name'          => $request->name,
+        'status'        => 'progress',
+        'description'   => $request->description
+        ]);
 
         return response()->json(['message'=>'success','todo'=>$todo]);
     }
@@ -73,11 +80,35 @@ class TodoController extends Controller
      * @param  \App\todo  $todo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, todo $todo)
+    public function update(Request $request, Todo $todo)
     {
-        //
-    }
+        $f_name = null;
 
+        if ($request->hasFile('file')) {
+             $file   = $request->file;
+            $f_name = rand().'.'.$file->getClientOriginalExtension();
+            $file->move('todo/',$f_name);
+        }
+
+        if ($request->status == "done") {
+            $todo = $todo->update([
+            'file'      => $f_name,
+            'url'       => $request->url,
+            'status'    => $request->status,
+            'done_at'   => Carbon::now()
+            ]);
+
+            return response()->json(['message'=>'success']);
+        }else{
+            $todo = $todo->update([
+            'file'      => $f_name,
+            'url'       => $request->url,
+            'status'    => $request->status,
+            ]);
+
+            return response()->json(['message'=>'success']);
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *

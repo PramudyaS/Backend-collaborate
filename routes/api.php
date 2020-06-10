@@ -28,5 +28,6 @@ Route::group(['middleware'=>'auth:sanctum'],function(){
 	Route::resource('task','TaskController');
 
 	Route::get('todo/{task_id}','TodoController@index');
+	Route::post('todo/{todo}','TodoController@update');
 	Route::resource('todo','TodoController');
 });

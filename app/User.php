@@ -37,4 +37,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function projects()
+    {
+        return $this->hasMany(\App\ProjectParticipant::class,'user_id','id');
+    }
 }

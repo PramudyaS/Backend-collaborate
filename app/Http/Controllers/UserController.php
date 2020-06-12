@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\ProjectParticipant;
 use Illuminate\Http\Request;
+use App\User;
+use App\ProjectParticipant;
 
-class ProjectParticipantController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,21 +36,16 @@ class ProjectParticipantController extends Controller
      */
     public function store(Request $request)
     {
-        ProjectParticipant::create([
-        'project_id'    => $request->id,
-        'user_id'       => $request->user_id
-        ]);
-
-        return response()->json(['message'=>'success']);  
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\ProjectParticipant  $projectParticipant
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(ProjectParticipant $projectParticipant)
+    public function show($id)
     {
         //
     }
@@ -57,10 +53,10 @@ class ProjectParticipantController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\ProjectParticipant  $projectParticipant
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProjectParticipant $projectParticipant)
+    public function edit($id)
     {
         //
     }
@@ -69,10 +65,10 @@ class ProjectParticipantController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ProjectParticipant  $projectParticipant
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProjectParticipant $projectParticipant)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -80,11 +76,30 @@ class ProjectParticipantController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ProjectParticipant  $projectParticipant
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProjectParticipant $projectParticipant)
+    public function destroy($id)
     {
         //
+    }
+
+
+    public function search(Request $request)
+    {
+        $projects = ProjectParticipant::where('project_id',$request->project_id)
+        ->pluck('user_id');
+
+        if (count($projects) > 0) {
+            $users = User::whereDoesntHave('projects',function($query) use($projects){
+                $query->where('user_id',$projects);
+            })
+            ->get();
+        }else{
+            $users = User::select('id','name','username')
+            ->get();
+        }
+
+        return response()->json(['message'=>'success','users'=>$users]);
     }
 }

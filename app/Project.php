@@ -13,4 +13,5 @@ class Project extends Model
     {
     	return $this->belongsTo('App\User','creator_id','id');
     }
+
 }

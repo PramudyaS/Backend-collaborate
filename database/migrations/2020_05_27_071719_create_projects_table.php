@@ -15,7 +15,16 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->longText('description');
+            $table->date('date_start');
+            $table->date('date_end');
+            $table->unsignedBigInteger('creator_id');
+            $table->string('thumbnail')->nullable();
+            $table->enum('status',['progress','done','hold','archived'])->default('progress');
             $table->timestamps();
+
+            $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

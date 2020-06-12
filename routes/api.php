@@ -24,10 +24,15 @@ Route::group(['middleware'=>'auth:sanctum'],function(){
 	Route::get('project/{creator_id}','ProjectController@index');
 	Route::resource('project','ProjectController');
 
+	Route::post('project/user/add','ProjectParticipantController@store');
+
 	Route::get('task/{project_id}','TaskController@index');
 	Route::resource('task','TaskController');
 
 	Route::get('todo/{task_id}','TodoController@index');
 	Route::post('todo/{todo}','TodoController@update');
 	Route::resource('todo','TodoController');
+
 });
+
+Route::post('user/search/','UserController@search');

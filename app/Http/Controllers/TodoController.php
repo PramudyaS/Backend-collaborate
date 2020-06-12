@@ -42,7 +42,7 @@ class TodoController extends Controller
     {
         $todo = Todo::create([
         'task_id'       => $request->task_id,
-        'user_id'       => $request->user_id,
+        'done_by'       => $request->done_by,
         'name'          => $request->name,
         'status'        => 'progress',
         'description'   => $request->description

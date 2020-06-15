@@ -16,7 +16,6 @@ class TaskController extends Controller
     public function index($project_id)
     {
         $tasks = Task::where('project_id',$project_id)
-        ->select('tasks.id','tasks.name','tasks.description','tasks.project_id',DB::raw('DATE_FORMAT(due_date,"%d %b %Y") as due_date'),'tasks.status')
         ->latest()
         ->get();
 
@@ -92,6 +91,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+
+        return response()->json(['message'=>'success']);
     }
 }

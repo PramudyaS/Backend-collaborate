@@ -15,8 +15,7 @@ class ProjectController extends Controller
      */
     public function index($creator_id)
     {
-        $projects = Project::select('projects.id','projects.name','projects.description',DB::raw('DATE_FORMAT(date_start,"%d %b %Y") as date_start'),DB::raw('DATE_FORMAT(date_end,"%d %b %Y") as date_end'),'projects.creator_id')
-        ->where('creator_id',$creator_id)
+        $projects = Project::where('creator_id',$creator_id)
         ->latest()
         ->get();
 
@@ -92,6 +91,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return response()->json(['message'=>'success']);
     }
 }

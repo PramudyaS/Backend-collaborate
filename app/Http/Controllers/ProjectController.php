@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use App\ProjectParticipant;
 use Illuminate\Http\Request;
 use DB;
 
@@ -40,7 +41,11 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        Project::create($request->all());
+        $project = Project::create($request->all());
+        ProjectParticipant::create([
+        'project_id'    => $project->id,
+        'user_id'       => $request->creator_id
+        ]);
 
         return response()->json(['message'=>'Success Create New Project']);
     }

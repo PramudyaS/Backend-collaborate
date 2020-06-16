@@ -117,6 +117,8 @@ class TodoController extends Controller
      */
     public function destroy(todo $todo)
     {
-        //
+        $todo->delete();
+
+        return response()->json(['message'=>'success']);
     }
 }
